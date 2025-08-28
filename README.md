@@ -1,7 +1,7 @@
 
 # Francis Mistica's Portfolio Website
 
-![Portfolio Preview](https://github.com/user-attachments/assets/ae539704-2292-492f-882c-c90595b34717)
+![Portfolio Preview](./public/images/imagedefault.webp)
 
 ## 🚀 About This Project
 
