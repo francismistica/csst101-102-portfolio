@@ -7,8 +7,10 @@ import icon from "astro-icon";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://neonmint.efeele.dev",
-  integrations: [preact(), icon(), sitemap({
+  site: "https://francismistica.vercel.app",
+  integrations: [preact(), icon({
+    iconDir: "src/icons",
+  }), sitemap({
     filter: (page) =>
       !page.includes("/blog/tags") &&
       !page.includes("/blog/techs"),

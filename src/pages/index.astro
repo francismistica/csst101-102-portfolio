@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Experience from "../components/portfolio/Experience.astro";
+import Subjects from "../components/portfolio/Subjects.astro";
 import HeroIndex from "../components/portfolio/HeroIndex.astro";
 import Contact from "../components/portfolio/Contact.astro";
 import ListProjects from "../components/portfolio/ListProjects.astro";
@@ -16,7 +16,7 @@ const { pageTitle, pageDescription, OGImage } = staticData.data;
   ogimage={{ alt: OGImage.alt, url: OGImage.url }}
 >
   <HeroIndex />
-  <Experience />
+  <Subjects />
   <ListProjects />
   <Contact />
 </Layout>

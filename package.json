@@ -1,12 +1,16 @@
 {
-  "name": "site",
+  "name": "fnmm",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "deploy": "node deploy.js",
+    "deploy:vercel": "vercel",
+    "deploy:netlify": "netlify deploy",
+    "deploy:github": "echo 'Push to GitHub to trigger GitHub Actions workflow'"
   },
   "dependencies": {
     "@astrojs/preact": "^4.0.8",

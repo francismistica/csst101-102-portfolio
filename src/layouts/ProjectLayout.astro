@@ -1,6 +1,5 @@
 ---
 import Layout from "./Layout.astro";
-import DatePub from "../components/blog/DatePub.astro";
 import Capsule from "../components/ui/Capsule.astro";
 import Heading from "../components/ui/Heading.astro";
 import NavArticle from "../components/layout/NavArticle.astro";
@@ -31,7 +30,7 @@ const { frontmatter } = Astro.props;
           }
         </div>
         
-        <DatePub date={frontmatter.pubDate} />
+
 
         <Heading text={frontmatter.title} />
 

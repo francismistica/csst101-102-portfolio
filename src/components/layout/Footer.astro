@@ -32,8 +32,8 @@ const {
       class="relative h-6 cursor-pointer before:absolute before:left-1/2 before:top-1/2 before:h-full before:w-[40%] before:-translate-x-1/2 before:-translate-y-1/2 before:rounded-full before:bg-[#50fd8f25] before:blur-3xl before:opacity-80 before:-z-1 hover:text-mint-500 transition-all [text-shadow:0_1px_2px_#000]"
     >
       <a href="/" aria-label="Return to homepage">
-        <!-- This icon represents the logo -->
-        <Icon name="logo" aria-hidden="true" />
+        <!-- This logo uses the PNG file from public directory -->
+        <img src="/logo.png" alt="FNMM Logo" class="h-6 w-auto filter brightness-0 dark:invert" aria-hidden="true" />
       </a>
     </div>
     <div class="text-center">
@@ -43,7 +43,7 @@ const {
         aria-label="About the website development"
         ><Icon name="code" aria-hidden="true" /> Developed by <strong
           >{alias}</strong
-        >, with Astro</a
+        ></a
       >
     </div>
     <div
@@ -60,11 +60,6 @@ const {
         link={instagram}
         iconName={instagramIconName}
         label={`Visit ${alias} on Instagram`}
-      />
-      <Social
-        link={youtube}
-        iconName={youtubeIconName}
-        label={`Visit ${alias} on YouTube`}
       />
       <Social
         link={github}

@@ -1,0 +1,53 @@
+---
+import SubjectItem from "./SubjectItem.astro";
+import Heading from "../ui/Heading.astro";
+import { Icon } from "astro-icon/components";
+
+const SUBJECTS = [
+  {
+    date: "Mr. Mark Bernardino",
+    title: "IS 101: Advanced Presentation and Reasoning",
+    company: "LSPU-SCC",
+    description:
+      "This course equips students with the essential skills to communicate complex ideas with clarity and confidence. It emphasizes advanced techniques in creating impactful presentations, crafting logical arguments, and applying reasoning strategies to academic, professional, and real-world problems. Students will engage in activities that strengthen critical thinking, persuasive speaking, and structured problem-solving, preparing them to analyze issues deeply and present solutions effectively.",
+  },
+  {
+    date: "Mr. Mark Bernardino",
+    title: "IS 102: Basic Machine Learning",
+    company: "LSPU-SCC",
+    description:
+      "This introductory course provides a comprehensive overview of the fundamental principles of machine learning. Students will explore essential concepts such as supervised and unsupervised learning, basic algorithms, and data preprocessing. The course also highlights practical applications of machine learning in various fields, allowing students to understand how computers learn patterns and make predictions from data. By the end of the course, students will gain a solid foundation in machine learning concepts, tools, and techniques that can serve as a stepping stone for more advanced studies.",
+  },
+];
+---
+
+<section class="py-8 px-8 max-md:py-4 mb-4 scroll-m-16" id="subjects">
+  <div class="flex flex-col pt-8 max-w-4xl mx-auto">
+    <div class="flex gap-4 items-center justify-center">
+      <Icon class="text-3xl dark:text-white text-blacktext" name="briefcase" />
+      <Heading text="Our" textGradient="Subjects" level={2} />
+    </div>
+
+    <div class="relative max-md:mt-0 mt-8" aria-label="Academic subjects">
+      <ol class="relative mt-10">
+        {
+          SUBJECTS.map((subject, index) => (
+            <li>
+              <article
+                role="article"
+                aria-labelledby={`subject-title-${index}`}
+              >
+                <div
+                  class="flex flex-col gap-2  text-zinc-00 dark:text-zinc-300 md:col-span-3"
+                  aria-describedby={`subject-title-${index}`}
+                >
+                  <SubjectItem {...subject} />
+                </div>
+              </article>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>

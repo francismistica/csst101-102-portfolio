@@ -8,7 +8,7 @@ interface Props {
   linkEnabled?: boolean;
 }
 
-const { size = "md", lang, linkEnabled = true } = Astro.props as Props;
+const { size = "md", lang, linkEnabled = false } = Astro.props as Props;
 
 const baseClasses = {
   container: [
@@ -49,7 +49,7 @@ const getIconContainerClasses = () => {
   linkEnabled ? (
     <a
       class="cursor-pointer"
-      href={`/blog/techs/${lang}`}
+      href="#"
       aria-label={`View articles about ${selectedLanguage.name}`}
       role="link"
     >

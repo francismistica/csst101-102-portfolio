@@ -20,12 +20,10 @@
         ├── favicon-32x32.png
         ├── favicon.ico
         └── 📁images
-            ├── 📁posts    # Post images
             └── 📁projects # Project images
         └── site.webmanifest # PWA configuration file
     └── 📁src
         ├── 📁components  # Reusable UI components
-        │   ├── 📁blog    # Blog components
         │   ├── 📁layout  # Layout components
         │   ├── 📁portfolio # Portfolio components
         │   └── 📁ui      # UI components
@@ -33,21 +31,13 @@
         ├── 📁layouts     # Site layouts
         │   ├── Layout.astro           # Main application layout
         │   ├── MarkdownAbout.astro    # About-me page layout
-        │   ├── MarkdownPostLayout.astro # Posts page layout
         │   └── ProjectLayout.astro    # Projects page layout
         ├── 📁pages       # Site pages
         │   ├── about-me.md            # About-me page
-        │   ├── 📁blog   # All posts page
-        │   │   ├── index.astro        # Blog home page
-        │   │   ├── 📁posts            # Blog posts
-        ├── │   ├── └── index.astro     # All posts page
-        │   │   ├── 📁tags             # Blog tags
-        │   │   └── 📁techs            # Blog technologies
         │   ├── index.astro            # Home page
         │   ├── 📁portfolio
         │   │   └── 📁projects         # Portfolio projects
-        │   ├── robots.txt.ts          # robots.txt configuration
-        │   └── rss.xml.js             # RSS configuration
+        │   └── robots.txt.ts          # robots.txt configuration
         ├── 📁scripts
         │   └── menu.js                # Menu script
         ├── 📁styles
@@ -86,7 +76,6 @@
 
 3. **🔍 SEO & Analytics**
    - Built-in sitemap generation
-   - RSS feed support
    - Vercel Speed Insights
 
 4. **🎨 Styling & UI**
@@ -168,7 +157,7 @@ To incorporate a new programming language or technological tool into the site's 
    - `name`: Is the name that will be displayed visibly in the interface
    - `iconName`: Is the name of the SVG file without the extension (must match exactly with the file name in `src/icons`)
 
-Once these steps are completed, the new language or technology will be available for use in the site's capsules. You can select it when creating or editing projects or posts, and the corresponding icon will be displayed correctly in the interface.
+Once these steps are completed, the new language or technology will be available for use in the site's capsules. You can select it when creating or editing projects, and the corresponding icon will be displayed correctly in the interface.
 
 If you encounter any issues during this process, try restarting the development server. In some cases, changes to configuration files or static resources require a restart to be detected correctly.
 
@@ -209,7 +198,27 @@ Place the generated files in the `📂 public` directory as follows:
 
 ## 🚀 Deployment
 
-The site is configured for deployment on Vercel, but can be deployed to any static hosting service.
+The site is configured for deployment on multiple platforms. Choose the one that best fits your needs:
+
+### Vercel (Recommended)
+
+1. **Create a Vercel Account**: Sign up at [vercel.com](https://vercel.com) if you don't have an account.
+2. **Import your GitHub Repository**: Connect your GitHub account and select this repository.
+3. **Configure the Project**: Vercel will automatically detect Astro and suggest the correct settings.
+4. **Deploy**: Click "Deploy" and Vercel will build and deploy your site.
+
+### Netlify
+
+1. **Create a Netlify Account**: Sign up at [netlify.com](https://netlify.com) if you don't have an account.
+2. **Import your GitHub Repository**: Connect your GitHub account and select this repository.
+3. **Configure the Project**: Netlify will use the settings in `netlify.toml`.
+4. **Deploy**: Click "Deploy site" and Netlify will build and deploy your site.
+
+### GitHub Pages
+
+1. **Enable GitHub Pages**: Go to your repository settings, navigate to "Pages" and select "GitHub Actions" as the source.
+2. **Trigger the Workflow**: Push to the main branch or manually trigger the workflow from the Actions tab.
+3. **Access Your Site**: Once deployed, your site will be available at `https://[username].github.io/[repository-name]/`
 
 ## 🤝 Contributing
 

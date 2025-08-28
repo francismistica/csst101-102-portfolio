@@ -1,16 +1,6 @@
 ---
-import Project from "./Project.astro";
 import Heading from "../ui/Heading.astro";
 import { Icon } from "astro-icon/components";
-
-const allPosts = await Astro.glob("../../pages/portfolio/projects/*.md");
-
-// Sort by descending date (most recent first)
-allPosts.sort(
-  (a, b) =>
-    new Date(b.frontmatter.pubDate).getTime() -
-    new Date(a.frontmatter.pubDate).getTime(),
-);
 ---
 
 <section
@@ -26,66 +16,24 @@ allPosts.sort(
     <p
       class="z-2 text-center mx-auto text-lg max-xl:text-base max-w-2xl dark:text-gray-200 text-blacktext my-6 leading-6 font-medium"
     >
-      I love <b
+      I'm currently working on <b
         class="bg-linear-to-r from-riptide-500 to-mint-500 dark:from-riptide-300 dark:to-mint-200 text-transparent bg-clip-text"
-        >turning ideas into real projects.</b
-      >
-      <br /> Here I show you some of the <b
+        >exciting new projects</b
+      > that will showcase my skills and learning. Check back soon to see <b
         class="bg-linear-to-r from-riptide-500 to-mint-500 dark:from-riptide-300 dark:to-mint-200 text-transparent bg-clip-text"
-        >developments</b
-      > I've worked on, applying technology, design, and lots of creativity.
-      <b
-        class="bg-linear-to-r from-riptide-500 to-mint-500 dark:from-riptide-300 dark:to-mint-200 text-transparent bg-clip-text"
-        >Check them out!</b
-      >
+        >what I'm building</b
+      >!
     </p>
+
     <slot />
   </div>
 
-  <div
-    id="containerProjects"
-    class="mx-auto max-w-7xl grid grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 gap-5 p-2 py-4 max-h-[150vh] overflow-hidden transition-[max-height] duration-500 ease-in-out"
-  >
-    {
-      allPosts.map((post) => (
-        <Project
-          url={post.url}
-          title={post.frontmatter.title}
-          description={post.frontmatter.description}
-          date={post.frontmatter.pubDate}
-          languages={post.frontmatter.languages}
-          image={post.frontmatter.image}
-        />
-      ))
-    }
-  </div>
-
-  <div
-    id="moreProjects"
-    class="absolute bottom-0 left-0 w-full flex justify-center text-center bg-linear-to-t from-[#FBFEFD] dark:from-[#0e0e10] from-55% to-transparent to-100% pb-30 pt-52"
-  >
-    <button
-      class="absolute font-bold cursor-pointer text-mint-400 dark:text-mint-100 hover:text-mint-500 dark:hover:text-mint-300 transition-all"
-    >
-      View More Projects...
-    </button>
+  <!-- Coming Soon Message -->
+  <div class="flex flex-col items-center justify-center py-16 mx-auto max-w-7xl">
+    <div class="text-center p-8 max-w-lg border border-dashed border-gray-300 dark:border-gray-700 rounded-lg">
+      <Icon name="rocket" class="text-5xl mb-4 mx-auto text-mint-400 dark:text-mint-300" />
+      <h3 class="text-xl font-bold mb-2 dark:text-white text-blacktext">Coming Soon!</h3>
+      <p class="text-gray-600 dark:text-gray-300">I'm currently working on projects that will be showcased here. Check back later to see my portfolio grow!</p>
+    </div>
   </div>
 </section>
-
-<script>
-  document.querySelector("#moreProjects")?.addEventListener("click", () => {
-    const container = document.querySelector("#containerProjects");
-    const moreProjectsBtn = document.querySelector("#moreProjects");
-
-    if (container && moreProjectsBtn) {
-      // Expand container to show all projects
-      container.classList.remove("h-[150vh]");
-      container.classList.remove("h-auto");
-      // Hide the "View More" button after animation completes
-      moreProjectsBtn.classList.add("hidden");
-      setTimeout(() => {
-        moreProjectsBtn.classList.add("hidden");
-      }, 500);
-    }
-  });
-</script>
