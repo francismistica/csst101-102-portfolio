@@ -8,6 +8,12 @@ import { getCollection } from "astro:content";
 const [staticData] = await getCollection("staticData");
 const { github, githubIconName, linkedin, linkedinIconName } = staticData.data;
 
+interface Props {
+  showSubjects?: boolean;
+}
+
+const { showSubjects = false } = Astro.props;
+
 const currentPath = Astro.url.pathname;
 const routes = ["/", "/portfolio", "/about-me"];
 
@@ -15,7 +21,9 @@ const routes = ["/", "/portfolio", "/about-me"];
 const isActiveRoute = routes.includes(currentPath);
 
 const navItems = isActiveRoute
-  ? ["home", "subjects", "projects", "about"]
+  ? showSubjects
+    ? ["home", "subjects", "projects", "about"]
+    : ["home", "projects", "about"]
   : ["home", "about"]; // Change the items
 ---
 
@@ -28,9 +36,9 @@ const navItems = isActiveRoute
     class="relative mx-auto flex max-w-7xl flex-row items-center justify-between max-xl:px-6"
   >
     <a href="/" aria-label="Go to home">
-      <img 
-        src="/logo.png" 
-        alt="FNMM Logo" 
+      <img
+        src="/logo.png"
+        alt="FNMM Logo"
         class="h-6 w-auto cursor-pointer transition-all hover:brightness-75 filter brightness-0 dark:invert"
         aria-hidden="true"
       />

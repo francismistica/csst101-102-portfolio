@@ -1,6 +1,14 @@
 ---
 import Heading from "../ui/Heading.astro";
 import { Icon } from "astro-icon/components";
+import Project from "./Project.astro";
+
+const projects = (
+  await Astro.glob("../../pages/portfolio/projects/*.md")
+).filter(
+  (project) =>
+    !project.frontmatter.draft && !project.file.includes("placeholder"),
+);
 ---
 
 <section
@@ -8,32 +16,53 @@ import { Icon } from "astro-icon/components";
   id="projects"
 >
   <div class="mx-auto max-w-7xl py-8">
-    <div class="flex gap-4 items-center justify-center text-center">
+    <div class="flex gap-4 items-center justify-center mb-12">
       <Icon class="text-3xl dark:text-white text-blacktext" name="code" />
-      <Heading text="Projects" textGradient="Completed" level={2} />
+      <Heading text="Featured" textGradient="Projects" level={2} />
     </div>
 
-    <p
-      class="z-2 text-center mx-auto text-lg max-xl:text-base max-w-2xl dark:text-gray-200 text-blacktext my-6 leading-6 font-medium"
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full h-full"
     >
-      I'm currently working on <b
-        class="bg-linear-to-r from-riptide-500 to-mint-500 dark:from-riptide-300 dark:to-mint-200 text-transparent bg-clip-text"
-        >exciting new projects</b
-      > that will showcase my skills and learning. Check back soon to see <b
-        class="bg-linear-to-r from-riptide-500 to-mint-500 dark:from-riptide-300 dark:to-mint-200 text-transparent bg-clip-text"
-        >what I'm building</b
-      >!
-    </p>
-
-    <slot />
-  </div>
-
-  <!-- Coming Soon Message -->
-  <div class="flex flex-col items-center justify-center py-16 mx-auto max-w-7xl">
-    <div class="text-center p-8 max-w-lg border border-dashed border-gray-300 dark:border-gray-700 rounded-lg">
-      <Icon name="rocket" class="text-5xl mb-4 mx-auto text-mint-400 dark:text-mint-300" />
-      <h3 class="text-xl font-bold mb-2 dark:text-white text-blacktext">Coming Soon!</h3>
-      <p class="text-gray-600 dark:text-gray-300">I'm currently working on projects that will be showcased here. Check back later to see my portfolio grow!</p>
+      {
+        projects.length > 0 ? (
+          projects.map((project) => (
+            <div
+              class={
+                project.frontmatter.size === "md"
+                  ? "sm:col-span-2 lg:col-span-2 lg:row-span-2"
+                  : ""
+              }
+            >
+              <Project
+                title={project.frontmatter.title}
+                url={project.url}
+                image={project.frontmatter.image}
+                languages={project.frontmatter.languages}
+                description={project.frontmatter.description}
+                size={project.frontmatter.size}
+              />
+            </div>
+          ))
+        ) : (
+          /* Coming Soon Message - Only shown if no projects exist */
+          <div class="md:col-span-3 flex flex-col items-center justify-center py-16 mx-auto max-w-7xl">
+            <div class="text-center p-8 max-w-lg border border-dashed border-gray-300 dark:border-gray-700 rounded-lg">
+              <Icon
+                name="rocket"
+                class="text-5xl mb-4 mx-auto text-mint-400 dark:text-mint-300"
+              />
+              <h3 class="text-xl font-bold mb-2 dark:text-white text-blacktext">
+                Coming Soon!
+              </h3>
+              <p class="text-gray-600 dark:text-gray-300">
+                I'm currently working on projects that will be showcased here.
+                Check back later to see my portfolio grow!
+              </p>
+            </div>
+          </div>
+        )
+      }
     </div>
   </div>
 </section>

@@ -3,11 +3,10 @@ import Layout from "./Layout.astro";
 import Capsule from "../components/ui/Capsule.astro";
 import Heading from "../components/ui/Heading.astro";
 import NavArticle from "../components/layout/NavArticle.astro";
+import Button from "../components/ui/Button.astro";
 import Contact from "../components/portfolio/Contact.astro";
 const { frontmatter } = Astro.props;
-
 ---
-
 
 <Layout
   pageTitle={frontmatter.title}
@@ -19,7 +18,7 @@ const { frontmatter } = Astro.props;
   >
     <div class="w-64 max-xl:hidden"></div>
     <article
-      class="flex flex-col gap-8 max-w-3xl max-md:w-full pb-10 pt-8 mt-8 px-14 max-md:px-10 max-sm:px-4  dark:bg-transparent bg-white dark:border-0 border border-neutral-100 rounded-2xl" 
+      class="flex flex-col gap-8 max-w-3xl max-md:w-full pb-10 pt-8 mt-8 px-14 max-md:px-10 max-sm:px-4 dark:bg-transparent bg-white dark:border-0 border border-neutral-100 rounded-2xl"
     >
       <header class="flex flex-col gap-4" id="start">
         <div class="flex gap-2 flex-wrap">
@@ -29,12 +28,8 @@ const { frontmatter } = Astro.props;
             ))
           }
         </div>
-        
-
 
         <Heading text={frontmatter.title} />
-
-      
       </header>
 
       <figure>
@@ -49,18 +44,135 @@ const { frontmatter } = Astro.props;
         }
       </figure>
 
-      <div class="markdown " id="content">
+      <div class="markdown" id="content">
         <slot />
       </div>
-      
+
+      {
+        frontmatter.website && (
+          <Button
+            link={frontmatter.website}
+            text="Visit Website"
+            variant="default"
+            isExternal={true}
+            iconName="paperplane"
+          />
+        )
+      }
+
+      <!-- Image Modal -->
+      <div
+        id="image-modal"
+        class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-8 bg-black/90 backdrop-blur-sm transition-opacity duration-300 opacity-0"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+      >
+        <button
+          id="modal-close"
+          class="fixed top-4 right-4 z-[60] text-gray-400 hover:text-white transition-colors p-2 bg-black/50 rounded-full backdrop-blur-md"
+          aria-label="Close modal"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            class="w-8 h-8"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+        <img
+          id="modal-image"
+          src=""
+          alt="Modal Image"
+          class="max-w-full max-h-full object-contain rounded-lg shadow-2xl scale-95 transition-transform duration-300"
+        />
+      </div>
+
+      <script>
+        const modal = document.getElementById("image-modal");
+        const modalImg = document.getElementById(
+          "modal-image",
+        ) as HTMLImageElement;
+        const closeBtn = document.getElementById("modal-close");
+
+        // Function to open modal
+        function openModal(src: string, alt: string) {
+          if (!modal || !modalImg) return;
+
+          modalImg.src = src;
+          modalImg.alt = alt;
+
+          modal.classList.remove("hidden");
+          // Small delay to allow display:block to apply before opacity transition
+          requestAnimationFrame(() => {
+            modal.classList.remove("opacity-0");
+            modalImg.classList.remove("scale-95");
+            modalImg.classList.add("scale-100");
+          });
+
+          document.body.style.overflow = "hidden"; // Prevent scrolling
+        }
+
+        // Function to close modal
+        function closeModal() {
+          if (!modal || !modalImg) return;
+
+          modal.classList.add("opacity-0");
+          modalImg.classList.remove("scale-100");
+          modalImg.classList.add("scale-95");
+
+          setTimeout(() => {
+            modal.classList.add("hidden");
+            modalImg.src = "";
+            document.body.style.overflow = "";
+          }, 300); // 300ms matches transition duration
+        }
+
+        // Add click listeners to all images in the content area
+        const contentImages = document.querySelectorAll(".markdown img");
+        contentImages.forEach((element) => {
+          const img = element as HTMLImageElement;
+          img.style.cursor = "zoom-in";
+          img.addEventListener("click", () => {
+            openModal(img.src, img.alt);
+          });
+        });
+
+        // Close on button click
+        closeBtn?.addEventListener("click", closeModal);
+
+        // Close on background click
+        modal?.addEventListener("click", (e) => {
+          if (
+            e.target === modal ||
+            (e.target as HTMLElement).closest(".relative") === null
+          ) {
+            // If clicking the backdrop or outside the image container (though backdrop covers all)
+            // actually just checking if target is modal background wrapper
+            if (e.target === modal) closeModal();
+          }
+        });
+
+        // Close on Escape key
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && !modal?.classList.contains("hidden")) {
+            closeModal();
+          }
+        });
+      </script>
     </article>
     <NavArticle title={frontmatter.title} />
   </section>
   <div
     class="flex flex-col gap-6 max-w-4xl max-lg:py-2 py-3 max-xl:py-2 mx-auto"
   >
-  
-
   </div>
   <Contact />
 </Layout>
