@@ -1,11 +1,50 @@
 import { useState, useEffect, useRef } from "preact/hooks";
 
+const placeholderPhrases = [
+  "What are Francis's skills?",
+  "What's his GitHub account?",
+  "Tell me about his projects...",
+  "How can I contact him?",
+  "What did he study?",
+];
+
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [showTryMeBadge, setShowTryMeBadge] = useState(false);
   const [hasAsked, setHasAsked] = useState(false);
   const widgetContainerRef = useRef<HTMLDivElement>(null);
+
+  // Typing effect state
+  const [placeholderText, setPlaceholderText] = useState("");
+  const [phraseIndex, setPhraseIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const currentPhrase = placeholderPhrases[phraseIndex];
+    let timer: ReturnType<typeof setTimeout>;
+
+    if (!isDeleting && placeholderText === currentPhrase) {
+      timer = setTimeout(() => setIsDeleting(true), 2000);
+    } else if (isDeleting && placeholderText === "") {
+      setIsDeleting(false);
+      setPhraseIndex((prev) => (prev + 1) % placeholderPhrases.length);
+    } else {
+      const timeout = isDeleting ? 30 : 60;
+      timer = setTimeout(() => {
+        setPlaceholderText(
+          currentPhrase.substring(
+            0,
+            placeholderText.length + (isDeleting ? -1 : 1),
+          ),
+        );
+      }, timeout);
+    }
+
+    return () => clearTimeout(timer);
+  }, [placeholderText, isDeleting, phraseIndex, isOpen]);
 
   // Determine if badge should be shown based on dates
   useEffect(() => {
@@ -341,7 +380,7 @@ export default function ChatWidget() {
 
             <input
               type="text"
-              placeholder="Type here..."
+              placeholder={placeholderText + (isOpen ? "|" : "")}
               className="w-full bg-transparent border-2 border-gray-200 dark:border-zinc-800 rounded-full py-3.5 pl-12 pr-12 text-[15px] font-montserrat focus:outline-none focus:border-mint-400 dark:focus:border-mint-500 focus:ring-0 text-blacktext dark:text-white transition-all placeholder:text-gray-400"
             />
 
