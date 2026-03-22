@@ -8,7 +8,7 @@ const showTryMeBadge = now >= startDate && now <= endDate;
 ---
 
 <!-- Floating Trigger Button -->
-<div class="fixed bottom-6 right-6 z-[90] flex flex-col items-end gap-3 animate-fade-up">
+<div id="chat-widget-container" class="fixed bottom-6 right-6 z-[90] flex flex-col items-end gap-3 animate-fade-up transition-transform duration-75">
   {showTryMeBadge && (
     <!-- "Try Me" Badge -->
     <div class="relative bg-mint-500 dark:bg-mint-400 text-white dark:text-[#0E0E11] text-xs font-bold px-3 py-1.5 rounded-full shadow-lg animate-bounce">
@@ -183,5 +183,24 @@ const showTryMeBadge = now >= startDate && now <= endDate;
 
   if (chatOverlay) {
     chatOverlay.addEventListener('click', closeChat);
+  }
+
+  // Scroll logic to un-stick the widget before the contact section
+  const widgetContainer = document.getElementById('chat-widget-container');
+  const contactSection = document.getElementById('contact-section');
+
+  if (widgetContainer && contactSection) {
+    window.addEventListener('scroll', () => {
+      const contactRect = contactSection.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+
+      // If the contact section enters the viewport, push the widget up
+      if (contactRect.top < windowHeight) {
+        const offset = windowHeight - contactRect.top;
+        widgetContainer.style.transform = `translateY(-${offset}px)`;
+      } else {
+        widgetContainer.style.transform = 'translateY(0)';
+      }
+    }, { passive: true });
   }
 </script>
