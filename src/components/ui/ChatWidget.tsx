@@ -6,6 +6,12 @@ const placeholderPhrases = [
   "Tell me about his projects...",
   "How can I contact him?",
   "What did he study?",
+  "Is he open to freelance work?",
+  "What technologies does he use?",
+  "Where is Francis based?",
+  "Can you show me his resume?",
+  "What is his latest project?",
+  "Does he know React and Astro?",
 ];
 
 export default function ChatWidget() {
