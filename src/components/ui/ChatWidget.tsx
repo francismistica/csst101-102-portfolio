@@ -399,19 +399,20 @@ export default function ChatWidget() {
 
             <button
               type="submit"
-              className="absolute right-3 p-1 text-gray-400 hover:text-mint-500 dark:hover:text-mint-400 transition-colors flex items-center justify-center"
+              className="absolute right-2 p-2 bg-mint-500 hover:bg-mint-600 text-white rounded-full transition-colors flex items-center justify-center shadow-sm"
+              aria-label="Send message"
             >
               <svg
-                className="w-5 h-5"
+                className="w-4 h-4 translate-x-[1px]"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                strokeWidth="2"
+                strokeWidth="2.5"
               >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
+                  d="M12 19V5m0 0l-7 7m7-7l7 7"
                 />
               </svg>
             </button>
