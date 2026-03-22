@@ -92,7 +92,7 @@ export default function ChatWidget() {
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-mint-300 to-mint-600 p-[2px]">
               <img
-                src="/logo.png"
+                src="/kaiko-bot-icon.png"
                 className="w-full h-full rounded-full object-cover bg-white dark:bg-[#0E0E11] p-1"
                 alt="Assistant Avatar"
               />
@@ -130,7 +130,7 @@ export default function ChatWidget() {
             <div className="flex-1 flex flex-col items-center justify-center text-center px-4 animate-fade-up mt-24">
               <div className="w-24 h-24 mb-6 rounded-3xl bg-gradient-to-tr from-mint-400 to-mint-600 p-[2px] shadow-lg shadow-mint-500/20 rotate-3 hover:rotate-0 transition-transform duration-300">
                 <img
-                  src="/logo.png"
+                  src="/kaiko-bot-icon.png"
                   className="w-full h-full rounded-3xl object-contain bg-white dark:bg-[#0E0E11] p-3 dark:invert"
                   alt="FM Logo"
                 />
