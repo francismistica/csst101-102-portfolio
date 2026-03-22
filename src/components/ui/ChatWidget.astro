@@ -1,0 +1,47 @@
+---
+const startDate = new Date('2026-03-22T00:00:00');
+const endDate = new Date('2026-04-17T23:59:59');
+const now = new Date();
+
+// Check if current date is within the "Try Me" visibility window
+const showTryMeBadge = now >= startDate && now <= endDate;
+---
+
+<div class="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3 animate-fade-up">
+  {showTryMeBadge && (
+    <!-- "Try Me" Badge -->
+    <div class="relative bg-mint-500 dark:bg-mint-400 text-white dark:text-[#0E0E11] text-xs font-bold px-3 py-1.5 rounded-full shadow-lg animate-bounce">
+      Try Me
+      <div class="absolute -bottom-1 right-5 w-2.5 h-2.5 bg-mint-500 dark:bg-mint-400 rotate-45"></div>
+    </div>
+  )}
+
+  <!-- Chat Button -->
+  <button
+    id="chat-widget-trigger"
+    class="w-18 h-18 bg-[#0E0E11] dark:bg-mint-50 text-white dark:text-[#0E0E11] rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-4 focus:ring-mint-300/50 border-2 border-mint-500 dark:border-mint-400 overflow-hidden group p-3 cursor-pointer"
+    aria-label="Open Chat"
+  >
+    <img
+      src="/kaiko-bot-icon.png"
+      alt="FM Chat Logo"
+      class="w-full h-full object-contain dark:invert transition-transform group-hover:scale-105"
+    />
+  </button>
+</div>
+
+<script>
+  const chatBtn = document.getElementById('chat-widget-trigger');
+  if (chatBtn) {
+    chatBtn.addEventListener('click', () => {
+      // TODO: Trigger chat sheet component logic here
+      console.log('Chat widget activated: Chat sheet will open here.');
+
+      // Simple click effect
+      chatBtn.style.transform = 'scale(0.95)';
+      setTimeout(() => {
+        chatBtn.style.transform = '';
+      }, 150);
+    });
+  }
+</script>
