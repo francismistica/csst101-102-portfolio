@@ -150,6 +150,7 @@ const showTryMeBadge = now >= startDate && now <= endDate;
 
   function openChat() {
     if(!chatOverlay || !chatSheet) return;
+    document.body.style.overflow = 'hidden';
     chatOverlay.classList.remove('hidden');
     // slight delay for transition effect
     setTimeout(() => {
@@ -166,6 +167,7 @@ const showTryMeBadge = now >= startDate && now <= endDate;
 
   function closeChat() {
     if(!chatOverlay || !chatSheet) return;
+    document.body.style.overflow = '';
     chatSheet.classList.add('translate-x-full');
     chatOverlay.classList.add('opacity-0');
     setTimeout(() => {
