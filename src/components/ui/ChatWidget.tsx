@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "preact/hooks";
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [showTryMeBadge, setShowTryMeBadge] = useState(false);
   const [hasAsked, setHasAsked] = useState(false);
   const widgetContainerRef = useRef<HTMLDivElement>(null);
@@ -125,20 +126,40 @@ export default function ChatWidget() {
         </div>
 
         {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-5 space-y-6 flex flex-col font-montserrat relative scroll-smooth">
+        <div
+          className="flex-1 overflow-y-auto p-5 space-y-6 flex flex-col font-montserrat relative scroll-smooth overflow-x-hidden"
+          onMouseMove={(e) => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            setMousePos({
+              x: e.clientX - rect.left,
+              y: e.clientY - rect.top,
+            });
+          }}
+        >
           {!hasAsked ? (
-            <div className="flex-1 flex flex-col items-center justify-center text-center px-4 animate-fade-up mt-24">
-              <div className="w-24 h-24 mb-6 rounded-3xl bg-gradient-to-tr from-mint-400 to-mint-600 p-[2px] shadow-lg shadow-mint-500/20 rotate-3 hover:rotate-0 transition-transform duration-300">
+            <div className="flex-1 flex flex-col items-center justify-center text-center px-4 animate-fade-up mt-24 relative">
+              {/* Interactive Dot Pattern Background */}
+              <div
+                className="absolute inset-0 z-0 pointer-events-none opacity-40 dark:opacity-20"
+                style={{
+                  backgroundImage:
+                    "radial-gradient(circle at 2px 2px, rgba(150, 150, 150, 0.4) 1px, transparent 0)",
+                  backgroundSize: "24px 24px",
+                  maskImage: `radial-gradient(circle 200px at ${mousePos.x}px ${mousePos.y}px, black 0%, transparent 100%)`,
+                  WebkitMaskImage: `radial-gradient(circle 200px at ${mousePos.x}px ${mousePos.y}px, black 0%, transparent 100%)`,
+                }}
+              />
+              <div className="relative z-10 w-24 h-24 mb-6 rounded-3xl bg-gradient-to-tr from-mint-400 to-mint-600 p-[2px] shadow-lg shadow-mint-500/20 rotate-3 hover:rotate-0 transition-transform duration-300">
                 <img
                   src="/kaiko-bot-icon.png"
                   className="w-full h-full rounded-3xl object-contain bg-white dark:bg-[#0E0E11] p-3 dark:invert"
                   alt="FM Logo"
                 />
               </div>
-              <h3 className="text-2xl font-bold text-blacktext dark:text-white mb-3">
+              <h3 className="relative z-10 text-2xl font-bold text-blacktext dark:text-white mb-3">
                 Ask Francis's AI
               </h3>
-              <p className="text-gray-500 dark:text-gray-400 text-[15px] max-w-[280px] leading-relaxed">
+              <p className="relative z-10 text-gray-500 dark:text-gray-400 text-[15px] max-w-[280px] leading-relaxed">
                 Want to know more about Francis's projects, experience, or
                 skills? Just ask below!
               </p>
