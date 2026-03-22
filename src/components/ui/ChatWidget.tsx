@@ -158,7 +158,7 @@ export default function ChatWidget() {
 
         {/* Header */}
         <div
-          className={`flex items-center p-4 border-b border-gray-100 dark:border-white/10 relative z-10 bg-white dark:bg-[#0E0E11] ${hasAsked ? "justify-between" : "justify-end"}`}
+          className={`flex items-center p-4 border-b border-gray-100/50 dark:border-white/5 relative z-20 bg-white/80 dark:bg-[#0E0E11]/80 backdrop-blur-md ${hasAsked ? "justify-between" : "justify-end"}`}
         >
           {hasAsked && (
             <div className="flex items-center gap-3">
