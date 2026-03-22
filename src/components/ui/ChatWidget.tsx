@@ -374,8 +374,13 @@ export default function ChatWidget() {
           )}
         </div>
 
+        {/* Fade Out Gradient Above Input */}
+        {hasAsked && (
+          <div className="absolute bottom-[76px] left-0 w-full h-8 bg-gradient-to-t from-white dark:from-[#0E0E11] to-transparent pointer-events-none z-10"></div>
+        )}
+
         {/* Input Area */}
-        <div className="p-4 border-t border-gray-100 dark:border-white/10 bg-white dark:bg-[#0E0E11] relative z-10">
+        <div className="p-4 border-t border-gray-100 dark:border-white/10 bg-white dark:bg-[#0E0E11] relative z-20">
           <form
             className="relative flex items-center"
             onSubmit={(e) => {
