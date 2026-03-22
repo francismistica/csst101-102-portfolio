@@ -27,7 +27,10 @@ export default function ChatWidget() {
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen || hasAsked) {
+      if (hasAsked) setPlaceholderText("Type a message...");
+      return;
+    }
 
     const currentPhrase = placeholderPhrases[phraseIndex];
     let timer: ReturnType<typeof setTimeout>;
@@ -50,7 +53,7 @@ export default function ChatWidget() {
     }
 
     return () => clearTimeout(timer);
-  }, [placeholderText, isDeleting, phraseIndex, isOpen]);
+  }, [placeholderText, isDeleting, phraseIndex, isOpen, hasAsked]);
 
   // Determine if badge should be shown based on dates
   useEffect(() => {
@@ -390,7 +393,7 @@ export default function ChatWidget() {
 
             <input
               type="text"
-              placeholder={placeholderText + (isOpen ? "|" : "")}
+              placeholder={placeholderText + (isOpen && !hasAsked ? "|" : "")}
               className="w-full bg-transparent border-2 border-gray-200 dark:border-zinc-800 rounded-full py-3.5 pl-12 pr-12 text-[15px] font-montserrat focus:outline-none focus:border-mint-400 dark:focus:border-mint-500 focus:ring-0 text-blacktext dark:text-white transition-all placeholder:text-gray-400"
             />
 
