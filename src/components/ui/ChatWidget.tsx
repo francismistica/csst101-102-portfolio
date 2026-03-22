@@ -87,9 +87,29 @@ export default function ChatWidget() {
       {/* Chat Sheet */}
       <div
         className={`fixed top-0 right-0 h-full w-full sm:w-[450px] bg-white dark:bg-[#0E0E11] z-[100] transform transition-transform duration-400 ease-[cubic-bezier(0.32,0.72,0,1)] shadow-2xl sm:border-l border-mint-500/20 flex flex-col ${isOpen ? "translate-x-0" : "translate-x-full"}`}
+        onMouseMove={(e) => {
+          const rect = e.currentTarget.getBoundingClientRect();
+          setMousePos({
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top,
+          });
+        }}
       >
+        {!hasAsked && (
+          <div
+            className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-300"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 1px 1px, rgba(13, 188, 130, 0.25) 1px, transparent 0)",
+              backgroundSize: "14px 14px",
+              maskImage: `radial-gradient(circle 300px at ${mousePos.x}px ${mousePos.y}px, black 0%, transparent 100%)`,
+              WebkitMaskImage: `radial-gradient(circle 300px at ${mousePos.x}px ${mousePos.y}px, black 0%, transparent 100%)`,
+            }}
+          />
+        )}
+
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-100 dark:border-white/10">
+        <div className="flex items-center justify-between p-4 border-b border-gray-100 dark:border-white/10 relative z-10 bg-white dark:bg-[#0E0E11]">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-mint-300 to-mint-600 p-[2px]">
               <img
@@ -126,28 +146,7 @@ export default function ChatWidget() {
         </div>
 
         {/* Messages Area */}
-        <div
-          className="flex-1 overflow-y-auto p-5 space-y-6 flex flex-col font-montserrat relative scroll-smooth overflow-x-hidden"
-          onMouseMove={(e) => {
-            const rect = e.currentTarget.getBoundingClientRect();
-            setMousePos({
-              x: e.clientX - rect.left,
-              y: e.clientY - rect.top,
-            });
-          }}
-        >
-          {!hasAsked && (
-            <div
-              className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-300"
-              style={{
-                backgroundImage:
-                  "radial-gradient(circle at 2px 2px, rgba(150, 150, 150, 0.6) 1.5px, transparent 0)",
-                backgroundSize: "20px 20px",
-                maskImage: `radial-gradient(circle 250px at ${mousePos.x}px ${mousePos.y}px, black 10%, transparent 100%)`,
-                WebkitMaskImage: `radial-gradient(circle 250px at ${mousePos.x}px ${mousePos.y}px, black 10%, transparent 100%)`,
-              }}
-            />
-          )}
+        <div className="flex-1 overflow-y-auto p-5 space-y-6 flex flex-col font-montserrat relative scroll-smooth overflow-x-hidden z-10">
           {!hasAsked ? (
             <div className="flex-1 flex flex-col items-center justify-center text-center px-4 animate-fade-up mt-24 relative z-10">
               <div className="w-24 h-24 mb-6 rounded-3xl bg-gradient-to-tr from-mint-400 to-mint-600 p-[2px] shadow-lg shadow-mint-500/20 rotate-3 hover:rotate-0 transition-transform duration-300">
@@ -316,7 +315,7 @@ export default function ChatWidget() {
         </div>
 
         {/* Input Area */}
-        <div className="p-4 border-t border-gray-100 dark:border-white/10 bg-white dark:bg-[#0E0E11]">
+        <div className="p-4 border-t border-gray-100 dark:border-white/10 bg-white dark:bg-[#0E0E11] relative z-10">
           <form
             className="relative flex items-center"
             onSubmit={(e) => {
