@@ -158,7 +158,7 @@ export default function ChatWidget() {
 
         {/* Header */}
         <div
-          className={`flex items-center p-4 border-b border-gray-100/50 dark:border-white/5 relative z-20 bg-white/80 dark:bg-[#0E0E11]/80 backdrop-blur-md ${hasAsked ? "justify-between" : "justify-end"}`}
+          className={`flex items-center p-4 border-b border-gray-100/50 dark:border-white/5 absolute top-0 left-0 w-full z-20 bg-white/80 dark:bg-[#0E0E11]/80 backdrop-blur-md ${hasAsked ? "justify-between" : "justify-end"}`}
         >
           {hasAsked && (
             <div className="flex items-center gap-3">
@@ -198,7 +198,7 @@ export default function ChatWidget() {
         </div>
 
         {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-5 space-y-6 flex flex-col font-montserrat relative scroll-smooth overflow-x-hidden z-10">
+        <div className="flex-1 overflow-y-auto px-5 pb-5 pt-20 space-y-6 flex flex-col font-montserrat relative scroll-smooth overflow-x-hidden z-10">
           {!hasAsked ? (
             <div className="flex-1 flex flex-col items-center justify-center text-center px-4 animate-fade-up mt-24 relative z-10">
               <div className="w-24 h-24 mb-6 rounded-3xl bg-gradient-to-tr from-mint-400 to-mint-600 p-[2px] shadow-lg shadow-mint-500/20 rotate-3 hover:rotate-0 transition-transform duration-300">
