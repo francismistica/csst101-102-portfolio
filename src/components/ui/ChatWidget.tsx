@@ -14,12 +14,29 @@ const placeholderPhrases = [
   "Does he know React and Astro?",
 ];
 
+type Message = {
+  id: string;
+  role: "user" | "bot";
+  text: string;
+};
+
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [showTryMeBadge, setShowTryMeBadge] = useState(false);
   const [hasAsked, setHasAsked] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: "init",
+      role: "bot",
+      text: "Hey there!\n\nNeed answers or help with your to-do list? I've got you covered!\n\nJust type what you need, and let's dive into making things happen.",
+    },
+  ]);
+
   const widgetContainerRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Typing effect state
   const [placeholderText, setPlaceholderText] = useState("");
@@ -96,6 +113,81 @@ export default function ChatWidget() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Scroll to bottom when messages update
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages, isLoading, hasAsked]);
+
+  const handleSubmit = async (e: Event) => {
+    e.preventDefault();
+    if (!inputValue.trim() || isLoading) return;
+
+    const userText = inputValue.trim();
+    setInputValue("");
+    setHasAsked(true);
+
+    const newUserMsg: Message = {
+      id: Date.now().toString(),
+      role: "user",
+      text: userText,
+    };
+    setMessages((prev) => [...prev, newUserMsg]);
+    setIsLoading(true);
+
+    try {
+      const res = await fetch(
+        "https://personaln8n.francismistica.me/webhook/kaiko-ai",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ message: userText }),
+        },
+      );
+
+      if (!res.ok) throw new Error("Network response was not ok");
+
+      let botText = "";
+      const contentType = res.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        const data = await res.json();
+        // Handle variations of n8n output structures
+        botText =
+          data.output ||
+          data.response ||
+          data.message ||
+          (Array.isArray(data)
+            ? data[0].output || JSON.stringify(data[0])
+            : JSON.stringify(data));
+      } else {
+        botText = await res.text();
+      }
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now().toString(),
+          role: "bot",
+          text: botText || "No response received.",
+        },
+      ]);
+    } catch (err) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now().toString(),
+          role: "bot",
+          text: "Sorry, I'm having trouble connecting right now. Please try again later.",
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <>
@@ -211,8 +303,8 @@ export default function ChatWidget() {
             <div className="flex-1 flex flex-col items-center justify-center text-center px-4 animate-fade-up mt-24 relative z-10">
               <div className="w-24 h-24 mb-6 rounded-3xl bg-gradient-to-tr from-mint-400 to-mint-600 p-[2px] shadow-lg shadow-mint-500/20 rotate-3 hover:rotate-0 transition-transform duration-300">
                 <img
-                  src="/glowing-kaiko-ai.png"
-                  className="w-full h-full rounded-3xl object-contain bg-white dark:bg-[#0E0E11] p-3"
+                  src="/kaiko-bot-icon.png"
+                  className="w-full h-full rounded-3xl object-contain bg-white dark:bg-[#0E0E11] p-3 dark:invert"
                   alt="FM Logo"
                 />
               </div>
@@ -226,150 +318,70 @@ export default function ChatWidget() {
             </div>
           ) : (
             <>
-              {/* Bot Message */}
-              <div className="flex flex-col gap-1 max-w-[85%] animate-fade-up">
-                <div className="bg-gray-50 dark:bg-white/5 text-blacktext dark:text-gray-200 p-4 rounded-2xl rounded-tl-sm text-[15px] leading-relaxed border border-gray-100 dark:border-white/10 shadow-sm">
-                  <p className="mb-4">Hey there!</p>
-                  <p className="mb-4">
-                    Need answers or help with your to-do list? I've got you
-                    covered!
-                  </p>
-                  <p>
-                    Just type what you need, and let's dive into making things
-                    happen.
-                  </p>
-                </div>
-              </div>
-
-              {/* User Message */}
-              <div className="flex gap-2 max-w-[90%] self-end group relative flex-row-reverse animate-fade-up">
-                <div className="bg-mint-50 dark:bg-mint-900/30 text-blacktext dark:text-gray-200 p-4 rounded-2xl rounded-tr-sm text-[15px] leading-relaxed border border-mint-100 dark:border-mint-800/50 shadow-sm">
-                  Create me a CSV of the top 20 SaaS companies by revenue that
-                  have raised capital in the last 12 months.
-                </div>
-                {/* Hover Actions */}
-                <div className="absolute -bottom-5 right-4 bg-zinc-800 text-gray-300 rounded-lg shadow-md px-2 py-1.5 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10 border border-zinc-700">
-                  <button className="hover:text-white" title="Improve">
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
-                      />
-                    </svg>
-                  </button>
-                  <button className="hover:text-white" title="Edit">
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                      />
-                    </svg>
-                  </button>
-                  <button className="hover:text-white" title="Retry">
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                      />
-                    </svg>
-                  </button>
-                  <button className="hover:text-white" title="Copy">
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-
-              {/* Bot Message - File */}
-              <div className="flex flex-col gap-2 max-w-[85%] mt-6 animate-fade-up">
-                <div className="bg-gray-50 dark:bg-white/5 text-blacktext dark:text-gray-200 p-4 rounded-2xl rounded-tl-sm text-[15px] border border-gray-100 dark:border-white/10 shadow-sm">
-                  Easy! Here you go.
-                </div>
-                {/* Attachment */}
-                <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-3 flex items-center justify-between text-white shadow-md w-full hover:bg-zinc-800 transition-colors cursor-pointer group">
-                  <div className="flex items-center gap-3">
-                    <div className="bg-[#1e7b54] text-white text-[10px] tracking-wider font-bold rounded p-2 flex items-center justify-center">
-                      CSV
+              {messages.map((msg) =>
+                msg.role === "bot" ? (
+                  <div
+                    key={msg.id}
+                    className="flex flex-col gap-1 max-w-[85%] animate-fade-up"
+                  >
+                    <div className="bg-gray-50 dark:bg-white/5 text-blacktext dark:text-gray-200 p-4 rounded-2xl rounded-tl-sm text-[15px] leading-relaxed border border-gray-100 dark:border-white/10 shadow-sm whitespace-pre-wrap">
+                      {msg.text}
                     </div>
-                    <span className="text-sm font-medium truncate group-hover:underline">
-                      Top_20_SaaS_Companies.csv
-                    </span>
                   </div>
-                  <button className="text-gray-400 hover:text-white transition-colors">
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-
-              {/* User Message */}
-              <div className="flex gap-2 max-w-[90%] self-end flex-row-reverse mt-4 animate-fade-up">
-                <div className="bg-mint-50 dark:bg-mint-900/30 text-blacktext dark:text-gray-200 p-4 rounded-2xl rounded-tr-sm text-[15px] leading-relaxed border border-mint-100 dark:border-mint-800/50 shadow-sm">
-                  Actually, filter by U.S. companies only and include details of
-                  fundraising. Export into a new Google Sheet for me.
-                </div>
-              </div>
+                ) : (
+                  <div
+                    key={msg.id}
+                    className="flex gap-2 max-w-[90%] self-end group relative flex-row-reverse animate-fade-up"
+                  >
+                    <div className="bg-mint-50 dark:bg-mint-900/30 text-blacktext dark:text-gray-200 p-4 rounded-2xl rounded-tr-sm text-[15px] leading-relaxed border border-mint-100 dark:border-mint-800/50 shadow-sm whitespace-pre-wrap">
+                      {msg.text}
+                    </div>
+                    {/* Hover Actions */}
+                    <div className="absolute -bottom-5 right-4 bg-zinc-800 text-gray-300 rounded-lg shadow-md px-2 py-1.5 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10 border border-zinc-700">
+                      <button
+                        className="hover:text-white"
+                        title="Copy"
+                        onClick={() => navigator.clipboard.writeText(msg.text)}
+                      >
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                ),
+              )}
 
               {/* Typing Indicator */}
-              <div className="flex gap-2 max-w-[85%] mt-2 animate-fade-up">
-                <div className="bg-gray-50 dark:bg-white/5 p-4 rounded-2xl rounded-tl-sm flex gap-1.5 items-center border border-gray-100 dark:border-white/10 shadow-sm h-12">
-                  <div
-                    className="w-1.5 h-1.5 bg-mint-500 rounded-full animate-bounce"
-                    style={{ animationDelay: "0ms" }}
-                  ></div>
-                  <div
-                    className="w-1.5 h-1.5 bg-mint-500 rounded-full animate-bounce"
-                    style={{ animationDelay: "150ms" }}
-                  ></div>
-                  <div
-                    className="w-1.5 h-1.5 bg-mint-500 rounded-full animate-bounce"
-                    style={{ animationDelay: "300ms" }}
-                  ></div>
+              {isLoading && (
+                <div className="flex gap-2 max-w-[85%] mt-2 animate-fade-up">
+                  <div className="bg-gray-50 dark:bg-white/5 p-4 rounded-2xl rounded-tl-sm flex gap-1.5 items-center border border-gray-100 dark:border-white/10 shadow-sm h-12">
+                    <div
+                      className="w-1.5 h-1.5 bg-mint-500 rounded-full animate-bounce"
+                      style={{ animationDelay: "0ms" }}
+                    ></div>
+                    <div
+                      className="w-1.5 h-1.5 bg-mint-500 rounded-full animate-bounce"
+                      style={{ animationDelay: "150ms" }}
+                    ></div>
+                    <div
+                      className="w-1.5 h-1.5 bg-mint-500 rounded-full animate-bounce"
+                      style={{ animationDelay: "300ms" }}
+                    ></div>
+                  </div>
                 </div>
-              </div>
+              )}
+              <div ref={messagesEndRef} className="h-4" />
             </>
           )}
         </div>
@@ -381,13 +393,7 @@ export default function ChatWidget() {
 
         {/* Input Area */}
         <div className="p-4 border-t border-gray-100 dark:border-white/10 bg-white dark:bg-[#0E0E11] relative z-20">
-          <form
-            className="relative flex items-center"
-            onSubmit={(e) => {
-              e.preventDefault();
-              setHasAsked(true);
-            }}
-          >
+          <form className="relative flex items-center" onSubmit={handleSubmit}>
             <div className="absolute left-3 flex items-center justify-center p-1 rounded-full text-gray-400 hover:text-mint-500 cursor-pointer transition-colors">
               <svg
                 className="w-5 h-5"
@@ -406,13 +412,19 @@ export default function ChatWidget() {
 
             <input
               type="text"
+              value={inputValue}
+              onInput={(e) =>
+                setInputValue((e.target as HTMLInputElement).value)
+              }
+              disabled={isLoading}
               placeholder={placeholderText + (isOpen && !hasAsked ? "|" : "")}
               className="w-full bg-transparent border-2 border-gray-200 dark:border-zinc-800 rounded-full py-3.5 pl-12 pr-12 text-[15px] font-montserrat focus:outline-none focus:border-mint-400 dark:focus:border-mint-500 focus:ring-0 text-blacktext dark:text-white transition-all placeholder:text-gray-400"
             />
 
             <button
               type="submit"
-              className="absolute right-2 w-10 h-10 bg-mint-500 hover:bg-mint-600 active:scale-90 text-white rounded-full transition-all duration-200 flex items-center justify-center shadow-md"
+              disabled={isLoading || !inputValue.trim()}
+              className="absolute right-2 w-10 h-10 bg-mint-500 hover:bg-mint-600 active:scale-90 disabled:opacity-50 disabled:active:scale-100 text-white rounded-full transition-all duration-200 flex items-center justify-center shadow-md"
               aria-label="Send message"
             >
               <svg
