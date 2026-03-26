@@ -3,9 +3,9 @@ import { Redis } from "@upstash/redis";
 export const prerender = false;
 
 const redisUrl =
-  process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
+  import.meta.env.KV_REST_API_URL || import.meta.env.UPSTASH_REDIS_REST_URL;
 const redisToken =
-  process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+  import.meta.env.KV_REST_API_TOKEN || import.meta.env.UPSTASH_REDIS_REST_TOKEN;
 
 let redis: Redis | null = null;
 if (redisUrl && redisToken) {
@@ -58,7 +58,7 @@ export async function POST({
     }
 
     const webhookUrl =
-      process.env.N8N_WEBHOOK_URL ||
+      import.meta.env.N8N_WEBHOOK_URL ||
       "https://personaln8n.francismistica.me/webhook/kaiko-ai";
 
     const res = await fetch(webhookUrl, {
