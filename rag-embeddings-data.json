@@ -1,0 +1,317 @@
+[
+  {
+    "id": "static-title-francis",
+    "text": "Francis Mistica is a Fullstack Developer.",
+    "metadata": {
+      "source": "static-data",
+      "type": "fact",
+      "topic": "background"
+    }
+  },
+  {
+    "id": "static-alias-francis",
+    "text": "Francis Mistica is also known by the alias FNMM.",
+    "metadata": {
+      "source": "static-data",
+      "type": "fact",
+      "topic": "background"
+    }
+  },
+  {
+    "id": "contact-email-francis",
+    "text": "Francis Mistica's contact email is francismistica06@gmail.com.",
+    "metadata": {
+      "source": "static-data",
+      "type": "fact",
+      "topic": "contact"
+    }
+  },
+  {
+    "id": "social-github-francis",
+    "text": "Francis Mistica's GitHub profile can be found at https://github.com/Kiko915.",
+    "metadata": {
+      "source": "static-data",
+      "type": "fact",
+      "topic": "contact"
+    }
+  },
+  {
+    "id": "social-linkedin-francis",
+    "text": "Francis Mistica's LinkedIn profile is located at https://www.linkedin.com/in/devkaiko/.",
+    "metadata": {
+      "source": "static-data",
+      "type": "fact",
+      "topic": "contact"
+    }
+  },
+  {
+    "id": "social-instagram-francis",
+    "text": "Francis Mistica's Instagram profile is https://www.instagram.com/misticafrancis/.",
+    "metadata": {
+      "source": "static-data",
+      "type": "fact",
+      "topic": "contact"
+    }
+  },
+  {
+    "id": "social-youtube-francis",
+    "text": "Francis Mistica's YouTube channel is https://www.youtube.com/kikcodes",
+    "metadata": {
+      "source": "static-data",
+      "type": "fact",
+      "topic": "contact"
+    }
+  },
+  {
+    "id": "personal-hobby-music",
+    "text": "Francis Mistica enjoys Music as a hobby.",
+    "metadata": {
+      "source": "static-data",
+      "type": "fact",
+      "topic": "personal"
+    }
+  },
+  {
+    "id": "personal-hobby-walking",
+    "text": "Francis Mistica enjoys Walking as a hobby.",
+    "metadata": {
+      "source": "static-data",
+      "type": "fact",
+      "topic": "personal"
+    }
+  },
+  {
+    "id": "personal-hobby-matcha",
+    "text": "Francis Mistica is passionate about Matcha, and mentions that matcha sparks his ideas.",
+    "metadata": {
+      "source": "static-data",
+      "type": "fact",
+      "topic": "personal"
+    }
+  },
+  {
+    "id": "personal-hobby-movies",
+    "text": "Francis Mistica likes watching Movies as a hobby.",
+    "metadata": {
+      "source": "static-data",
+      "type": "fact",
+      "topic": "personal"
+    }
+  },
+  {
+    "id": "personal-hobby-reading",
+    "text": "Francis Mistica enjoys Reading as a hobby.",
+    "metadata": {
+      "source": "static-data",
+      "type": "fact",
+      "topic": "personal"
+    }
+  },
+  {
+    "id": "personal-hobby-mobile-games",
+    "text": "Francis Mistica plays Mobile Games as a hobby.",
+    "metadata": {
+      "source": "static-data",
+      "type": "fact",
+      "topic": "personal"
+    }
+  },
+  {
+    "id": "personal-hobby-tinkering",
+    "text": "Francis Mistica likes Tinkering and experimenting as a hobby.",
+    "metadata": {
+      "source": "static-data",
+      "type": "fact",
+      "topic": "personal"
+    }
+  },
+  {
+    "id": "experience-years-francis",
+    "text": "Francis Mistica has 6 years of experience in development.",
+    "metadata": {
+      "source": "hero",
+      "type": "fact",
+      "topic": "experience"
+    }
+  },
+  {
+    "id": "experience-passion-francis",
+    "text": "Francis Mistica is highly passionate about development and technology.",
+    "metadata": {
+      "source": "hero",
+      "type": "fact",
+      "topic": "experience"
+    }
+  },
+  {
+    "id": "experience-digital-projects-francis",
+    "text": "Francis Mistica loves bringing digital projects to life.",
+    "metadata": {
+      "source": "hero",
+      "type": "fact",
+      "topic": "experience"
+    }
+  },
+  {
+    "id": "education-status-francis",
+    "text": "Francis Mistica is currently studying as a Computer Science student.",
+    "metadata": {
+      "source": "hero",
+      "type": "fact",
+      "topic": "background"
+    }
+  },
+  {
+    "id": "background-early-career",
+    "text": "Francis Mistica started building commercial web projects in 2020.",
+    "metadata": {
+      "source": "about",
+      "type": "fact",
+      "topic": "experience"
+    }
+  },
+  {
+    "id": "background-early-passion",
+    "text": "Francis Mistica's tech journey began at age 6 when he discovered computers and the internet, sparking a lifelong fascination with technology.",
+    "metadata": {
+      "source": "about",
+      "type": "paragraph",
+      "topic": "background"
+    }
+  },
+  {
+    "id": "background-high-school-stem",
+    "text": "In 2021, Francis Mistica pursued a STEM strand and built his first website using HTML, CSS, and JavaScript, which made him fall in love with web development.",
+    "metadata": {
+      "source": "about",
+      "type": "paragraph",
+      "topic": "background"
+    }
+  },
+  {
+    "id": "background-university-studies",
+    "text": "Currently, in 2025, Francis Mistica is a 3rd-year Computer Science student collaborating with classmates on various software projects.",
+    "metadata": {
+      "source": "about",
+      "type": "paragraph",
+      "topic": "background"
+    }
+  },
+  {
+    "id": "background-maker-spirit",
+    "text": "Francis Mistica embraces the maker spirit: learning, experimenting, and creating new things to bring innovative ideas to life.",
+    "metadata": {
+      "source": "about",
+      "type": "fact",
+      "topic": "personal"
+    }
+  },
+  {
+    "id": "project-largana-summary",
+    "text": "LargaNa! is a trip estimator app developed by Francis Mistica to help users plan travel time.",
+    "metadata": {
+      "source": "project",
+      "type": "fact",
+      "topic": "project"
+    }
+  },
+  {
+    "id": "project-largana-variant",
+    "text": "LargaNa! is an app created by Francis Mistica for estimating travel time so users will not be late.",
+    "metadata": {
+      "source": "project",
+      "type": "fact",
+      "topic": "project"
+    }
+  },
+  {
+    "id": "project-dadj-summary",
+    "text": "Dadj Auto Shop Management System is a web application built by Francis Mistica to streamline auto repair operations.",
+    "metadata": {
+      "source": "project",
+      "type": "fact",
+      "topic": "project"
+    }
+  },
+  {
+    "id": "project-dadj-variant",
+    "text": "Francis Mistica created the Dadj Auto Shop Management System using Vue.js, PostgreSQL, and Tailwind to manage inventory and service orders.",
+    "metadata": {
+      "source": "project",
+      "type": "fact",
+      "topic": "project"
+    }
+  },
+  {
+    "id": "project-kaiko-xmas-summary",
+    "text": "Kaiko's Christmas is an AI-powered greeting generator built by Francis Mistica to create personalized holiday messages.",
+    "metadata": {
+      "source": "project",
+      "type": "fact",
+      "topic": "project"
+    }
+  },
+  {
+    "id": "project-kaiko-xmas-variant",
+    "text": "Francis Mistica developed Kaiko's Christmas using React and Firebase to spread holiday cheer with AI-generated greetings.",
+    "metadata": {
+      "source": "project",
+      "type": "fact",
+      "topic": "project"
+    }
+  },
+  {
+    "id": "project-lnd-credly-summary",
+    "text": "LND Credly is a centralized database platform created by Francis Mistica for the LND community to manage certificates.",
+    "metadata": {
+      "source": "project",
+      "type": "fact",
+      "topic": "project"
+    }
+  },
+  {
+    "id": "project-lnd-credly-variant",
+    "text": "Built with React and Next.js, LND Credly is a web app by Francis Mistica that showcases Lingkod Ng Dambana community achievements and badges.",
+    "metadata": {
+      "source": "project",
+      "type": "fact",
+      "topic": "project"
+    }
+  },
+  {
+    "id": "project-lnd-website-summary",
+    "text": "The LND Official Website was built by Francis Mistica using Astro to facilitate events and workshops for the ministry community.",
+    "metadata": {
+      "source": "project",
+      "type": "fact",
+      "topic": "project"
+    }
+  },
+  {
+    "id": "project-lnd-website-variant",
+    "text": "Francis Mistica developed the official community platform for LND to connect members and organize mentoring sessions.",
+    "metadata": {
+      "source": "project",
+      "type": "fact",
+      "topic": "project"
+    }
+  },
+  {
+    "id": "project-techterview-summary",
+    "text": "TechTerview is a platform designed by Francis Mistica to help developers ace technical interviews through mock interviews.",
+    "metadata": {
+      "source": "project",
+      "type": "fact",
+      "topic": "project"
+    }
+  },
+  {
+    "id": "project-techterview-variant",
+    "text": "Francis Mistica built TechTerview with React, Next.js, and TypeScript to provide coding challenges and interview resources.",
+    "metadata": {
+      "source": "project",
+      "type": "fact",
+      "topic": "project"
+    }
+  }
+]

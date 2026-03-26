@@ -27,11 +27,15 @@ export default function ChatWidget() {
   const [hasAsked, setHasAsked] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [lastMessageTime, setLastMessageTime] = useState<number>(0);
+  const [messageCount, setMessageCount] = useState<number>(0);
+  const MAX_MESSAGES = 20;
+  const RATE_LIMIT_MS = 3000;
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "init",
       role: "bot",
-      text: "Hey there!\n\nNeed answers or help with your to-do list? I've got you covered!\n\nJust type what you need, and let's dive into making things happen.",
+      text: "Hey there!\n\nI'm Kaiko, Francis's AI assistant. Want to know more about his projects, skills, or experience?\n\nJust ask away, and I'll do my best to help you out!",
     },
   ]);
 
@@ -125,6 +129,35 @@ export default function ChatWidget() {
     e.preventDefault();
     if (!inputValue.trim() || isLoading) return;
 
+    const nowTime = Date.now();
+    if (messageCount >= MAX_MESSAGES) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now().toString(),
+          role: "bot",
+          text: "You've reached the maximum number of messages for this session. Please try again later or contact Francis directly!",
+        },
+      ]);
+      setInputValue("");
+      return;
+    }
+
+    if (nowTime - lastMessageTime < RATE_LIMIT_MS) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now().toString(),
+          role: "bot",
+          text: "You're sending messages too fast! Please wait a few seconds.",
+        },
+      ]);
+      return;
+    }
+
+    setLastMessageTime(nowTime);
+    setMessageCount((prev) => prev + 1);
+
     const userText = inputValue.trim();
     setInputValue("");
     setHasAsked(true);
@@ -138,34 +171,18 @@ export default function ChatWidget() {
     setIsLoading(true);
 
     try {
-      const res = await fetch(
-        "https://personaln8n.francismistica.me/webhook/kaiko-ai",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ message: userText }),
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({ message: userText }),
+      });
 
       if (!res.ok) throw new Error("Network response was not ok");
 
-      let botText = "";
-      const contentType = res.headers.get("content-type");
-      if (contentType && contentType.includes("application/json")) {
-        const data = await res.json();
-        // Handle variations of n8n output structures
-        botText =
-          data.output ||
-          data.response ||
-          data.message ||
-          (Array.isArray(data)
-            ? data[0].output || JSON.stringify(data[0])
-            : JSON.stringify(data));
-      } else {
-        botText = await res.text();
-      }
+      const data = await res.json();
+      const botText = data.text;
 
       setMessages((prev) => [
         ...prev,
@@ -325,7 +342,21 @@ export default function ChatWidget() {
                     className="flex flex-col gap-1 max-w-[85%] animate-fade-up"
                   >
                     <div className="bg-gray-50 dark:bg-white/5 text-blacktext dark:text-gray-200 p-4 rounded-2xl rounded-tl-sm text-[15px] leading-relaxed border border-gray-100 dark:border-white/10 shadow-sm whitespace-pre-wrap">
-                      {msg.text}
+                      {msg.text.split(/(https?:\/\/[^\s]+)/g).map((part, i) =>
+                        /(https?:\/\/[^\s]+)/g.test(part) ? (
+                          <a
+                            key={i}
+                            href={part}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-mint-600 dark:text-mint-400 hover:underline"
+                          >
+                            {part}
+                          </a>
+                        ) : (
+                          part
+                        ),
+                      )}
                     </div>
                   </div>
                 ) : (
@@ -334,7 +365,21 @@ export default function ChatWidget() {
                     className="flex gap-2 max-w-[90%] self-end group relative flex-row-reverse animate-fade-up"
                   >
                     <div className="bg-mint-50 dark:bg-mint-900/30 text-blacktext dark:text-gray-200 p-4 rounded-2xl rounded-tr-sm text-[15px] leading-relaxed border border-mint-100 dark:border-mint-800/50 shadow-sm whitespace-pre-wrap">
-                      {msg.text}
+                      {msg.text.split(/(https?:\/\/[^\s]+)/g).map((part, i) =>
+                        /(https?:\/\/[^\s]+)/g.test(part) ? (
+                          <a
+                            key={i}
+                            href={part}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-mint-600 dark:text-mint-400 hover:underline"
+                          >
+                            {part}
+                          </a>
+                        ) : (
+                          part
+                        ),
+                      )}
                     </div>
                     {/* Hover Actions */}
                     <div className="absolute -bottom-5 right-4 bg-zinc-800 text-gray-300 rounded-lg shadow-md px-2 py-1.5 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10 border border-zinc-700">
